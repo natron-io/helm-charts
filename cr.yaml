@@ -1,0 +1,8 @@
+remote: origin
+chart-dirs:
+  - charts
+chart-repos:
+  - bluestoneag=https://charts.natron.io
+validate-chart-schema: true
+validate-maintainers: true
+validate-yaml: false
