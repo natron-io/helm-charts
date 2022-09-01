@@ -71,31 +71,7 @@
                     }
                 },
                 "resources": {
-                    "type": "object",
-                    "properties": {
-                        "limits": {
-                            "type": "object",
-                            "properties": {
-                                "cpu": {
-                                    "type": "string"
-                                },
-                                "memory": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "requests": {
-                            "type": "object",
-                            "properties": {
-                                "cpu": {
-                                    "type": "string"
-                                },
-                                "memory": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
+                    "type": "object"
                 },
                 "startupProbe": {
                     "type": "object",
@@ -126,15 +102,7 @@
             "type": "object",
             "properties": {
                 "imagePullSecrets": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            }
-                        }
-                    }
+                    "type": "array"
                 },
                 "imageRegistry": {
                     "type": "string"
@@ -147,9 +115,6 @@
                 "annotations": {
                     "type": "object",
                     "properties": {
-                        "cert-manager.io/cluster-issuer": {
-                            "type": "string"
-                        },
                         "ingress.kubernetes.io/force-ssl-redirect": {
                             "type": "string"
                         }
@@ -194,6 +159,14 @@
             "type": "object"
         },
         "podSecurityContext": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "postgresql": {
             "type": "object",
             "properties": {
                 "enabled": {
@@ -248,38 +221,10 @@
                     "type": "string"
                 },
                 "objects": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "array"
                 },
                 "secretObjects": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "data": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "key": {
-                                            "type": "string"
-                                        },
-                                        "objectName": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            },
-                            "secretName": {
-                                "type": "string"
-                            },
-                            "type": {
-                                "type": "string"
-                            }
-                        }
-                    }
+                    "type": "array"
                 },
                 "tenantId": {
                     "type": "string"
@@ -316,6 +261,9 @@
                     "type": "string"
                 }
             }
+        },
+        "timezone": {
+            "type": "string"
         },
         "tolerations": {
             "type": "array"
@@ -386,31 +334,7 @@
                     }
                 },
                 "resources": {
-                    "type": "object",
-                    "properties": {
-                        "limits": {
-                            "type": "object",
-                            "properties": {
-                                "cpu": {
-                                    "type": "string"
-                                },
-                                "memory": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "requests": {
-                            "type": "object",
-                            "properties": {
-                                "cpu": {
-                                    "type": "string"
-                                },
-                                "memory": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
+                    "type": "object"
                 },
                 "startupProbe": {
                     "type": "object",
