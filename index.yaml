@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  safir:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-09-01T22:46:50.400372+02:00"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: A helm chart for safir applicaion
+    digest: 8efa97e096b5fbc06d0c6e82c716c01c4f21b1eaf8514451db8afb06deb92f85
+    home: https://github.com/BRF-Solutions/charts
+    keywords:
+    - safir
+    maintainers:
+    - name: BRF Solutions GmbH
+      url: https://github.com/BRF-Solutions/charts
+    name: safir
+    urls:
+    - https://charts.natron.io/charts/safir-0.0.1.tgz
+    version: 0.0.1
+generated: "2022-09-01T22:46:50.398216+02:00"
