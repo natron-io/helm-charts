@@ -1,0 +1,169 @@
+## @section Global parameters
+
+global:
+  imageRegistry: "ghcr.io"
+  imagePullSecrets:
+    - name: github-imagepullsecret
+
+## @section Common parameters
+
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+extraDeploy: []
+commonLabels: {}
+commonAnnotations: {}
+
+## @section SAFIR parameters
+
+safir:
+  domain: brf-solutions-test.safirpro.com
+  environment: prod
+  jdbcString: "jdbc:postgresql://db-prod-safir.postgres.database.azure.com:5432/brf_solutions_test"
+
+## @section Deployment parameters
+
+replicaCount: 1
+podLabels: {}
+podAnnotations: {}
+
+updateStrategy:
+  type: Recreate
+  #rollingUpdate: {}
+
+affinity: {}
+nodeSelector: {}
+tolerations: []
+topologySpreadConstraints: []
+podSecurityContext:
+  enabled: false
+initContainers: []
+extraVolumes: []
+
+apache:
+  image:
+    registry: "docker.io"
+    repository: brf-solutions/safir-apache
+    tag: 1.1.63
+    digest: ""
+    pullPolicy: Always
+  containerSecurityContext:
+    enabled: true
+    allowPrivilegeEscalation: false
+  command: []
+  args: []
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "100Mi"
+    limits:
+      cpu: "100m"
+      memory: "200Mi"
+  extraEnvVars: []
+  extraEnvVarsSecret: ""
+  extraVolumeMounts: []
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  startupProbe:
+    enabled: false
+
+tomcat:
+  image:
+    registry: ""
+    repository: brf-solutions/safir
+    tag: 1.1.63
+    digest: ""
+    pullPolicy: Always
+  containerSecurityContext:
+    enabled: true
+    allowPrivilegeEscalation: false
+  command: []
+  args: []
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "100Mi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+  extraEnvVars: []
+  extraEnvVarsSecret: "safir-deployment-tomcat"
+  extraVolumeMounts: []
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  startupProbe:
+    enabled: false
+
+## @section ServiceAccount parameters
+
+serviceAccount:
+  create: true
+  name: ""
+  automountServiceAccountToken: false
+
+## @section Service parameters
+
+service:
+  annotations: {}
+
+## @section PVC parameters
+
+pvc:
+  storage: "1Gi"
+  accessModes: ""
+  storageClassName: "standard"
+
+## @section Ingress parameters
+
+ingress:
+  enabled: true
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: safirpro-staging
+  ingressClassName: nginx
+  hostname: safirtest.safirpro.com
+  path: /
+  pathType: ImplementationSpecific
+  tls: true
+
+## @section secretProviderClass parameters
+
+secretProviderClass:
+  enabled: true
+  name: "azure-kv-prod-brf-solutions-safir-secrets"
+  keyvaultName: kv-prod-brfsolutions
+  usePodIdentity: ""
+  useVMManagedIdentity: ""
+  userAssignedIdentityID: ""
+  cloudName: ""
+  tenantId: 3a46ee62-6dd0-4d46-a9b1-6fdc5426b6cb
+  objects:
+    - |
+      objectName: github-imagepullsecret
+      objectType: secret
+      objectVersion: ""
+    - |
+      objectName: postgresql-brf-solutions-test-username
+      objectType: secret
+      objectVersion: ""
+    - |
+      objectName: postgresql-brf-solutions-test-password
+      objectType: secret
+      objectVersion: ""
+  secretObjects:
+  - secretName: github-imagepullsecret
+    data:
+    - key: .dockerconfigjson
+      objectName: github-imagepullsecret
+    type: kubernetes.io/dockerconfigjson
+  - secretName: safir-deployment-tomcat
+    data:
+    - key: SAFIR_DB_USER
+      objectName: postgresql-brf-solutions-test-username
+    - key: SAFIR_DB_PASSWORD
+      objectName: postgresql-brf-solutions-test-password
+    type: Opaque
