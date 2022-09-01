@@ -1,6 +1,6 @@
-# BlueStone Helm Repository
+# Natron Helm Repository
 
-You have come to the helm repository of [Natron](https://github.com/natron-io). Please visit the corresponding Github repository, if you have any issues or would like to contribute to the repository.
+You have come to the helm repository of [Natron Tech GmbH](https://github.com/natrongmbh). Please visit the corresponding Github repository, if you have any issues or would like to contribute to the repository.
 
 
 ## Add the Natron Helm Repository
