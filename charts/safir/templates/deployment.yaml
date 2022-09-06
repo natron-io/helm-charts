@@ -77,8 +77,13 @@ spec:
           env:
             - name: TZ
               value: {{ .Values.timezone | quote }}
+            {{- if .Values.ingress.hostname }}
+            - name: SAFIR_DOMAIN
+              value: {{ .Values.ingress.hostname | quote }}
+            {{- else }}
             - name: SAFIR_DOMAIN
               value: {{ .Values.safir.domain | quote }}
+            {{- end }}
             - name: TOMCAT_HOSTNAME
               value: "localhost"
             - name: TOMCAT_PORT
@@ -132,12 +137,23 @@ spec:
           env:
             - name: TZ
               value: {{ .Values.timezone | quote }}
+            {{- if .Values.ingress.hostname }}
+            - name: SAFIR_DOMAIN
+              value: {{ .Values.ingress.hostname | quote }}
+            {{- else }}
             - name: SAFIR_DOMAIN
               value: {{ .Values.safir.domain | quote }}
+            {{- end }}
             - name: SAFIR_ENVIRONMENT
               value: {{ .Values.safir.environment | quote }}
+            {{- if .Values.postgresql.enabled }}
+            # get namespace of the release
+            - name: SAFIR_DB_CONNECTION
+              value: "jdbc:postgresql://{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:5432/{{ .Values.postgresql.global.postgresql.auth.database }}?sslmode=disable"
+            {{- else }}
             - name: SAFIR_DB_CONNECTION
               value: {{ .Values.safir.jdbcString | quote }}
+            {{- end }}
             {{- if .Values.tomcat.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}

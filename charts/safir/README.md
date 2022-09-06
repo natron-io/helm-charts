@@ -2,7 +2,7 @@
 
 ![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square)
 
-A helm chart for safir erp applicaion
+A helm chart for safir erp application
 
 **Homepage:** <https://github.com/natrongmbh/helm-charts>
 
