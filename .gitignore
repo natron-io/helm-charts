@@ -1,0 +1,4 @@
+*.tgz
+values-test.yaml
+values-prod.yaml
+.DS_Store
