@@ -52,6 +52,21 @@ spec:
         {{- if .Values.initContainers }}
         {{- include "common.tplvalues.render" (dict "value" .Values.initContainers "context" $) | nindent 8 }}
         {{- end }}
+        {{- if .Values.postgresql.enabled }}
+        # pg_isready init container to check if the database is ready
+        - name: pg-isready
+          image: postgres
+          command: 
+          - 'sh'
+          - '-c'
+          - |
+            until pg_isready -h {{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local -p 5432; do
+              echo "Waiting for PostgreSQL to be ready..."
+              sleep 2
+            done
+          - 'echo'
+          - 'PostgreSQL is ready'
+        {{- end }}
       containers:
         - name: apache
           image: {{ include "safir.apache.image" . }}
