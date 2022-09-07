@@ -2,6 +2,32 @@ apiVersion: v1
 entries:
   safir:
   - apiVersion: v2
+    created: "2022-09-07T09:33:08.276151322Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: A helm chart for safir erp applicaion
+    digest: 0d39130282d3dd3f7570748e5212bd92ca5c5ce7d5b2ae68701224e0d9536c35
+    home: https://github.com/natrongmbh/helm-charts
+    keywords:
+    - safir
+    maintainers:
+    - name: Natron Tech GmbH
+      url: https://natron.io
+    - name: BRF Solutions GmbH
+      url: https://brf-solutions.ch
+    name: safir
+    urls:
+    - https://natrongmbh.github.io/helm-charts/safir-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2022-09-01T21:08:32.876181465Z"
     dependencies:
     - condition: postgresql.enabled
@@ -27,4 +53,4 @@ entries:
     urls:
     - https://natrongmbh.github.io/helm-charts/safir-0.0.1.tgz
     version: 0.0.1
-generated: "2022-09-01T21:08:32.864670583Z"
+generated: "2022-09-07T09:33:08.267902873Z"
