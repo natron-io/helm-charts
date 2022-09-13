@@ -1,8 +1,8 @@
 # safir
 
-![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square)
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square)
 
-A helm chart for safir erp application
+A helm chart for safir erp applicaion
 
 **Homepage:** <https://github.com/natrongmbh/helm-charts>
 
@@ -71,6 +71,7 @@ Major Changes to functions are documented with the version affected. **Before up
 | podSecurityContext | object | `{"enabled":false}` | Safir pods' Security Context |
 | postgresql.enabled | bool | `false` |  |
 | pvc.accessModes | string | If not set, `ReadWriteOnce` is used | Define AccessMode of pvc |
+| pvc.reclaimPolicy | string | `"Retain"` | Define ReclaimPolicy of pvc |
 | pvc.storage | string | `"1Gi"` | Define storage size for pvc |
 | pvc.storageClassName | string | `""` | Define StorageClass to use |
 | replicaCount | int | `1` | Number of Safir replicas to deploy |

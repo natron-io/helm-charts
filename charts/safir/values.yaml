@@ -176,6 +176,8 @@ pvc:
   accessModes: ""
   # -- Define StorageClass to use
   storageClassName: ""
+  # -- Define ReclaimPolicy of pvc
+  reclaimPolicy: Retain
 
 
 ## Ingress parameters

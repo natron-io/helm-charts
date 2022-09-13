@@ -185,6 +185,9 @@
                 },
                 "storageClassName": {
                     "type": "string"
+                },
+                "reclaimPolicy": {
+                    "type": "string"
                 }
             }
         },
