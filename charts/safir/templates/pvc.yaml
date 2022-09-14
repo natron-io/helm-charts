@@ -18,4 +18,3 @@ spec:
   accessModes:
     - {{ default "ReadWriteOnce" .Values.pvc.accessModes | quote }}
   storageClassName: {{ .Values.pvc.storageClassName | quote }}
-  persistentVolumeReclaimPolicy: {{ .Values.pvc.reclaimPolicy | quote }}
