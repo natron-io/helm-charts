@@ -5,14 +5,14 @@ dependencies:
     tags:
       - bitnami-common
     version: 2.x.x
-description: A helm chart for safir erp applicaion
+description: Sinpex App Backend Helm Chart
 home: https://github.com/natrongmbh/helm-charts
 keywords:
-  - safir
+  - sinpex-app-backend
 maintainers:
+  - name: Sinpex GmbH
+    url: https://sinpex.ch
   - name: Natron Tech GmbH
     url: https://natron.io
-  - name: BRF Solutions GmbH
-    url: https://brf-solutions.ch
-name: safir
-version: 0.0.2
+name: sinpex-app-backend
+version: 0.2.0
