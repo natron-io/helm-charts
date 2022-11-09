@@ -22,10 +22,3 @@ Return the proper tomcat image name
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
-
-{{/*
- Create the name of the SecretProviderClass to use
- */}}
-{{- define "safir.secretProviderClassName" -}}
-    {{ default (include "common.names.fullname" .) .Values.secretProviderClass.name }}
-{{- end -}}

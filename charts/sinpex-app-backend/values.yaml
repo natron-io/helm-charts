@@ -69,6 +69,9 @@ initContainers: []
 # -- Array to add extra volumes
 extraVolumes: []
 
+## Api parameters
+
+## Worker parameters
 
 ## Apache parameters
 apache:
@@ -194,36 +197,6 @@ ingress:
   pathType: ImplementationSpecific
   # -- Create TLS Secret, named "domain-tls"
   tls: true
-
-
-## secretProviderClass parameters
-secretProviderClass:
-  # -- Enable secretProviderClass creation
-  enabled: true
-  # -- Name of the secretProviderClass resource
-  # @default -- If not set, name is generated using the `common.names.fullname` template
-  name: ""
-  # -- Name of the keyvault
-  keyvaultName: ""
-  # -- Name of the secretProviderClass resource
-  # @default -- `false`
-  usePodIdentity: ""
-  # -- Name of the secretProviderClass resource
-  # @default -- `true` for using managed identity
-  useVMManagedIdentity: ""
-  # -- Name of the secretProviderClass resource
-  # @default -- "If empty, then defaults to use the system assigned identity on the VM"
-  userAssignedIdentityID: ""
-  # -- Name of the secretProviderClass resource
-  # @default -- If not set, `AzurePublicCloud` is used
-  cloudName: ""
-  # -- Name of the tenant
-  tenantId: ""
-  # -- Array of objects
-  objects: []
-  # -- Optional Array of secretObjects to generate
-  secretObjects: []
-
 
 ## PostgreSQL chart configuration
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml

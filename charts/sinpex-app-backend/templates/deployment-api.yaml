@@ -52,21 +52,6 @@ spec:
         {{- if .Values.initContainers }}
         {{- include "common.tplvalues.render" (dict "value" .Values.initContainers "context" $) | nindent 8 }}
         {{- end }}
-        {{- if .Values.postgresql.enabled }}
-        # pg_isready init container to check if the database is ready
-        - name: pg-isready
-          image: postgres
-          command: 
-          - 'sh'
-          - '-c'
-          - |
-            until pg_isready -h {{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local -p 5432; do
-              echo "Waiting for PostgreSQL to be ready..."
-              sleep 2
-            done
-          - 'echo'
-          - 'PostgreSQL is ready'
-        {{- end }}
       containers:
         - name: apache
           image: {{ include "safir.apache.image" . }}
@@ -84,8 +69,6 @@ spec:
             - containerPort: 80
               name: web
           volumeMounts:
-            - name: www
-              mountPath: /var/www/htdocs
             {{- if .Values.apache.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" .Values.apache.extraVolumeMounts "context" $) | nindent 12 }}
             {{- end }}
@@ -144,11 +127,6 @@ spec:
             {{- if .Values.tomcat.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.extraVolumeMounts "context" $) | nindent 12 }}
             {{- end }}
-            {{- if .Values.secretProviderClass.enabled }}
-            - name: secret-store
-              mountPath: "/mnt/secret-store"
-              readOnly: true
-            {{- end }}
           env:
             - name: TZ
               value: {{ .Values.timezone | quote }}
@@ -190,17 +168,6 @@ spec:
           resources: {{- toYaml .Values.tomcat.resources | nindent 12 }}
           {{- end }}
       volumes:
-        - name: www
-          persistentVolumeClaim:
-            claimName: {{ include "common.names.fullname" . }}
-        {{- if .Values.secretProviderClass.enabled }}
-        - name: secret-store
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: {{ include "safir.secretProviderClassName" . }}
-        {{- end }}
         {{- if .Values.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 8 }}
         {{- end }}
