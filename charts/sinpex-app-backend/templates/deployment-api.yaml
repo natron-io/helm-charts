@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}-api
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+  replicas: {{ .Values.api.replicaCount }}
+  {{- if .Values.api.updateStrategy }}
+  strategy: {{- toYaml .Values.api.updateStrategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
+        {{- if .Values.api.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.api.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- if .Values.api.podAnnotations }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.api.podAnnotations "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets: {{- include "common.tplvalues.render" (dict "value" .Values.global.imagePullSecrets "context" $) | nindent 8 }}
+      {{- end }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      serviceAccountName: {{ template "sinpex-app-backend.serviceAccountName" . }}
+      {{- if .Values.api.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" .Values.api.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.api.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.api.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.api.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.api.tolerations "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.api.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.api.topologySpreadConstraints "context" .) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.api.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.api.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- if .Values.api.initContainers }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.api.initContainers "context" $) | nindent 8 }}
+        {{- end }}
+      containers:
+        - name: api
+          image: {{ include "sinpex-app-backend.api.image" . }}
+          imagePullPolicy: {{ .Values.api.image.pullPolicy | quote }}
+          {{- if .Values.api.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.api.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.api.command }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.api.command "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.api.args }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.api.args "context" $) | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.service.api.port }}
+              name: http
+              protocol: TCP
+            - containerPort: {{ .Values.service.ws.port }}
+              name: ws
+              protocol: TCP
+          volumeMounts:
+            {{- if .Values.api.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.api.extraVolumeMounts "context" $) | nindent 12 }}
+            {{- end }}
+          env:
+            {{- if .Values.api.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.api.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
+          envFrom:
+          {{- if .Values.api.extraEnvVarsSecret }}
+          - secretRef:
+              name: {{ include "common.tplvalues.render" (dict "value" .Values.api.extraEnvVarsSecret "context" $) }}
+          {{- end }}
+          {{- if .Values.api.livenessProbe.enabled }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.api.livenessProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.api.readinessProbe.enabled }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.api.readinessProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.api.startupProbe.enabled }}
+          startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.api.startupProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.api.resources }}
+          resources: {{- toYaml .Values.api.resources | nindent 12 }}
+          {{- end }}
+      volumes:
+        {{- if .Values.api.extraVolumes }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.api.extraVolumes "context" $) | nindent 8 }}
+        {{- end }}

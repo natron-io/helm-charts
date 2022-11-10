@@ -1,0 +1,18 @@
+apiVersion: v2
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - bitnami-common
+    version: 2.x.x
+description: Sinpex App Backend Helm Chart
+home: https://github.com/natrongmbh/helm-charts
+keywords:
+  - sinpex-app-backend
+maintainers:
+  - name: Sinpex GmbH
+    url: https://sinpex.ch
+  - name: Natron Tech GmbH
+    url: https://natron.io
+name: sinpex-app-backend
+version: 0.2.0
