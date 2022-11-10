@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   safir:
   - apiVersion: v2
-    created: "2022-09-07T09:33:08.276151322Z"
+    created: "2022-11-10T19:38:48.499539455Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -14,7 +14,7 @@ entries:
       - bitnami-common
       version: 2.x.x
     description: A helm chart for safir erp applicaion
-    digest: 0d39130282d3dd3f7570748e5212bd92ca5c5ce7d5b2ae68701224e0d9536c35
+    digest: 0b4e8e26e21793dbe67dd6123d4b90994968d8acd34e99ed3625b3e38af42855
     home: https://github.com/natrongmbh/helm-charts
     keywords:
     - safir
@@ -53,4 +53,27 @@ entries:
     urls:
     - https://natrongmbh.github.io/helm-charts/safir-0.0.1.tgz
     version: 0.0.1
-generated: "2022-09-13T12:19:51.458696516Z"
+  sinpex-app-backend:
+  - apiVersion: v2
+    created: "2022-11-10T19:38:48.501315278Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Sinpex App Backend Helm Chart
+    digest: 44578811e1153d115e836b6ad94449c95dc24dba2d0a81da197d3c45a4d16992
+    home: https://github.com/natrongmbh/helm-charts
+    keywords:
+    - sinpex-app-backend
+    maintainers:
+    - name: Sinpex GmbH
+      url: https://sinpex.ch
+    - name: Natron Tech GmbH
+      url: https://natron.io
+    name: sinpex-app-backend
+    urls:
+    - https://natrongmbh.github.io/helm-charts/sinpex-app-backend-0.2.0.tgz
+    version: 0.2.0
+generated: "2022-11-10T19:38:48.491514354Z"
