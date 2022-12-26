@@ -56,7 +56,7 @@ spec:
         # pg_isready init container to check if the database is ready
         - name: pg-isready
           image: postgres
-          command: 
+          command:
           - 'sh'
           - '-c'
           - |

@@ -31,7 +31,7 @@ commonAnnotations: {}
 safir:
   # -- Safir Domain
   domain: example.com
-  # -- Safir Environment 
+  # -- Safir Environment
   environment: test
   # -- Safir JDBC string
   jdbcString: "jdbc:postgresql://postgres:5432/dbname"
