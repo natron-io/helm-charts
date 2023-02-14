@@ -28,36 +28,34 @@ commonAnnotations: {}
 
 ## Cronjobs parameters
 # -- Declare Cronjobs to be deployed
-cronjobs: []
-# -- Example Cronjob
-# cronjobs:
-#   - name: "example-cronjob"
-#     image:
-#       repository: "gcr.io/google-containers/hyperkube"
-#       tag: "v1.18.0"
-#       imagePullPolicy: "IfNotPresent"
-#     schedule: "*/5 * * * *"
-#     command: ["/bin/sh", "-c", "echo 'Hello World!'"]
-#     args: []
-#     ressources:
-#       requests:
-#         cpu: 100m
-#         memory: 128Mi
-#       limits:
-#         cpu: 100m
-#         memory: 128Mi
-#     env:
-#     - name: "FOO"
-#       value: "bar"
-#     envFrom:
-#     - secretRef:
-#       name: "example-secret"
-#     - configMapRef:
-#       name: "example-configmap"
-#     failedJobsHistoryLimit: 1
-#     successfulJobsHistoryLimit: 1
-#     concurrencyPolicy: "Forbid"
-#     restartPolicy: "OnFailure"
+cronjobs:
+  - name: "example-cronjob"
+    image:
+      repository: "gcr.io/google-containers/hyperkube"
+      tag: "v1.18.0"
+      imagePullPolicy: "IfNotPresent"
+    schedule: "*/5 * * * *"
+    command: ["/bin/sh", "-c", "echo 'Hello World!'"]
+    args: []
+    ressources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+    env:
+    - name: "FOO"
+      value: "bar"
+    envFrom:
+    - secretRef:
+      name: "example-secret"
+    - configMapRef:
+      name: "example-configmap"
+    failedJobsHistoryLimit: 1
+    successfulJobsHistoryLimit: 1
+    concurrencyPolicy: "Forbid"
+    restartPolicy: "OnFailure"
 
 ## Safir parameters
 safir:
