@@ -1,0 +1,86 @@
+{{- $jdbcString := .Values.safir.jdbcString }}
+{{- $jdbcStringParts := split "://" $jdbcString }}
+{{- $pgHost := (split ":" ($jdbcStringParts._1))._0 }}
+{{- $pgPort := (split "/" (split ":" ($jdbcStringParts._1))._1)._0 }}
+{{- $pgDatabase := (split "/" ($jdbcStringParts._1))._1 }}
+{{- $safirDomain := .Values.safir.domain }}
+
+{{- if .Values.cronjobs.safirUpdateStatistics.enabled -}}
+apiVersion: {{ include "common.capabilities.cronjob.apiVersion" . }}
+kind: CronJob
+metadata:
+  name: {{ printf "%s-database-s3-backup" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.cronjobs.safirUpdateStatistics.schedule | quote }}
+  successfulJobsHistoryLimit: {{ .Values.cronjobs.safirUpdateStatistics.historyLimit }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels: {{- include "common.labels.standard" . | nindent 12 }}
+            app.kubernetes.io/component: snapshotter
+          {{- if .Values.cronjobs.safirUpdateStatistics.podAnnotations }}
+          annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.cronjobs.safirUpdateStatistics.podAnnotations "context" $) | nindent 12 }}
+          {{- end }}
+        spec:
+          {{- if .Values.cronjobs.safirUpdateStatistics.nodeSelector }}
+          nodeSelector: {{-  toYaml .Values.cronjobs.safirUpdateStatistics.nodeSelector | nindent 12  }}
+          {{- end }}
+          {{- if .Values.cronjobs.safirUpdateStatistics.tolerations }}
+          tolerations: {{- toYaml .Values.cronjobs.safirUpdateStatistics.tolerations | nindent 12 }}
+          {{- end }}
+          {{- if .Values.global.imagePullSecrets }}
+          imagePullSecrets: {{- include "common.tplvalues.render" (dict "value" .Values.global.imagePullSecrets "context" $) | nindent 8 }}
+          {{- end }}
+          restartPolicy: OnFailure
+          {{- if .Values.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          containers:
+          - image: "{{ .Values.cronjobs.safirUpdateStatistics.image.repository }}:{{ .Values.cronjobs.safirUpdateStatistics.image.tag }}"
+            imagePullPolicy: {{ .Values.cronjobs.safirUpdateStatistics.image.imagePullPolicy }}
+            name: database-s3-backup
+            {{- with .Values.cronjobs.safirUpdateStatistics.extraEnvVars }}
+            env:
+            - name: SAFIR_DOMAIN
+              value: {{ $safirDomain | quote }}
+            - name: PGHOST
+              value: {{ $pgHost | quote }}
+            - name: PGPORT
+              value: {{ $pgPort | quote }}
+            - name: PGDATABASE
+              value: {{ $pgDatabase | quote }}
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: safir-deployment-tomcat
+                  key: SAFIR_DB_USER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: safir-deployment-tomcat
+                  key: SAFIR_DB_PASSWORD
+{{ toYaml . | indent 12 }}
+            {{- end }}
+            {{- with .Values.cronjobs.databaseS3Backup.resources }}
+            resources:
+{{ toYaml . | indent 14 }}
+            {{- end }}
+            {{- with .Values.cronjobs.safirUpdateStatistics.volumeMounts }}
+            volumeMounts:
+{{ toYaml . | indent 12 }}
+            {{- end }}
+          {{- with .Values.cronjobs.safirUpdateStatistics.volumes }}
+          volumes:
+{{ toYaml . | indent 12 }}
+          {{- end }}
+{{- end }}

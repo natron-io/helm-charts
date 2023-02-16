@@ -27,8 +27,84 @@ commonLabels: {}
 commonAnnotations: {}
 
 ## Cronjobs parameters
-# -- Declare Cronjobs to be deployed
-cronjobs: []
+# -- Declared Cronjobs to be deployed
+cronjobs:
+  # -- databaseS3Backup Cronjob
+  databaseS3Backup:
+    # -- Enable or disable the Cronjob
+    enabled: false
+    # -- Cronjob schedule
+    schedule: "0 0 * * *" # daily at midnight
+    # -- Cronjob history limit
+    historyLimit: 3
+    # -- Cronjob image
+    image:
+      # -- Cronjob image repository
+      repository: "ghcr.io/brf-solutions/cronjob-runner"
+      # -- Cronjob image tag
+      tag: "0.1.0"
+      # -- Cronjob image pull policy
+      imagePullPolicy: "IfNotPresent"
+    # -- Cronjob command
+    command: ["/bin/sh", "/scripts/database-s3-backup.sh"]
+    # -- Cronjob resources
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+    # -- Cronjob volume mounts
+    volumeMounts:
+      - name: database-s3-backup
+        mountPath: /scripts
+        readOnly: true
+    # -- Cronjob volumes
+    volumes:
+      - name: database-s3-backup
+        configMap:
+          name: database-s3-backup
+    extraEnvVars: []
+  # -- safirUpdateStatistics Cronjob
+  safirUpdateStatistics:
+    # -- Enable or disable the Cronjob
+    enabled: false
+    # -- Cronjob schedule
+    schedule: "0 0 * * *" # daily at midnight
+    # -- Cronjob history limit
+    historyLimit: 3
+    # -- Cronjob image
+    image:
+      # -- Cronjob image repository
+      repository: "ghcr.io/brf-solutions/cronjob-runner"
+      # -- Cronjob image tag
+      tag: "0.1.0"
+      # -- Cronjob image pull policy
+      imagePullPolicy: "IfNotPresent"
+    # -- Cronjob command
+    command: ["/bin/sh", "/scripts/safir-update-statistics.sh"]
+    # -- Cronjob resources
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+    # -- Cronjob volume mounts
+    volumeMounts:
+      - name: safir-update-statistics
+        mountPath: /scripts
+        readOnly: true
+    # -- Cronjob volumes
+    volumes:
+      - name: safir-update-statistics
+        configMap:
+          name: safir-update-statistics
+    extraEnvVars: []
+
+
 # -- Example Cronjob
 # cronjobs:
 #   - name: "example-cronjob"
