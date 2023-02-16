@@ -1,6 +1,6 @@
 # safir
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square)
 
 A helm chart for safir erp applicaion
 
@@ -50,7 +50,31 @@ Major Changes to functions are documented with the version affected. **Before up
 | apache.startupProbe | object | `{"enabled":false}` | StartupProbe for apache container |
 | commonAnnotations | object | `{}` | Add annotations to all the deployed resources |
 | commonLabels | object | `{}` | Add labels to all the deployed resources |
-| cronjobs | list | `[]` | Declare Cronjobs to be deployed |
+| cronjobs | object | `{"databaseS3Backup":{"command":["/bin/sh","/scripts/database-s3-backup.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}],"volumes":[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]},"safirUpdateStatistics":{"command":["/bin/sh","/scripts/safir-update-statistics.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}],"volumes":[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]}}` | Declared Cronjobs to be deployed |
+| cronjobs.databaseS3Backup | object | `{"command":["/bin/sh","/scripts/database-s3-backup.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}],"volumes":[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]}` | databaseS3Backup Cronjob |
+| cronjobs.databaseS3Backup.command | list | `["/bin/sh","/scripts/database-s3-backup.sh"]` | Cronjob command |
+| cronjobs.databaseS3Backup.enabled | bool | `false` | Enable or disable the Cronjob |
+| cronjobs.databaseS3Backup.historyLimit | int | `3` | Cronjob history limit |
+| cronjobs.databaseS3Backup.image | object | `{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"}` | Cronjob image |
+| cronjobs.databaseS3Backup.image.imagePullPolicy | string | `"IfNotPresent"` | Cronjob image pull policy |
+| cronjobs.databaseS3Backup.image.repository | string | `"ghcr.io/brf-solutions/cronjob-runner"` | Cronjob image repository |
+| cronjobs.databaseS3Backup.image.tag | string | `"0.1.0"` | Cronjob image tag |
+| cronjobs.databaseS3Backup.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Cronjob resources |
+| cronjobs.databaseS3Backup.schedule | string | `"0 0 * * *"` | Cronjob schedule |
+| cronjobs.databaseS3Backup.volumeMounts | list | `[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}]` | Cronjob volume mounts |
+| cronjobs.databaseS3Backup.volumes | list | `[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]` | Cronjob volumes |
+| cronjobs.safirUpdateStatistics | object | `{"command":["/bin/sh","/scripts/safir-update-statistics.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}],"volumes":[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]}` | safirUpdateStatistics Cronjob |
+| cronjobs.safirUpdateStatistics.command | list | `["/bin/sh","/scripts/safir-update-statistics.sh"]` | Cronjob command |
+| cronjobs.safirUpdateStatistics.enabled | bool | `false` | Enable or disable the Cronjob |
+| cronjobs.safirUpdateStatistics.historyLimit | int | `3` | Cronjob history limit |
+| cronjobs.safirUpdateStatistics.image | object | `{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"}` | Cronjob image |
+| cronjobs.safirUpdateStatistics.image.imagePullPolicy | string | `"IfNotPresent"` | Cronjob image pull policy |
+| cronjobs.safirUpdateStatistics.image.repository | string | `"ghcr.io/brf-solutions/cronjob-runner"` | Cronjob image repository |
+| cronjobs.safirUpdateStatistics.image.tag | string | `"0.1.0"` | Cronjob image tag |
+| cronjobs.safirUpdateStatistics.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Cronjob resources |
+| cronjobs.safirUpdateStatistics.schedule | string | `"0 0 * * *"` | Cronjob schedule |
+| cronjobs.safirUpdateStatistics.volumeMounts | list | `[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}]` | Cronjob volume mounts |
+| cronjobs.safirUpdateStatistics.volumes | list | `[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]` | Cronjob volumes |
 | extraDeploy | list | `[]` | Extra objects to deploy (value evaluated as a template) |
 | extraVolumes | list | `[]` | Array to add extra volumes |
 | fullnameOverride | string | `""` | String to fully override .fullname template |
@@ -75,6 +99,7 @@ Major Changes to functions are documented with the version affected. **Before up
 | pvc.storage | string | `"1Gi"` | Define storage size for pvc |
 | pvc.storageClassName | string | `""` | Define StorageClass to use |
 | replicaCount | int | `1` | Number of Safir replicas to deploy |
+| safir | object | `{"domain":"example.com","environment":"test","jdbcString":"jdbc:postgresql://postgres:5432/dbname"}` | Example Cronjob cronjobs:   - name: "example-cronjob"     image:       repository: "gcr.io/google-containers/hyperkube"       tag: "v1.18.0"       imagePullPolicy: "IfNotPresent"     schedule: "*/5 * * * *"     command: ["/bin/sh", "-c", "echo 'Hello World!'"]     args: []     ressources:       requests:         cpu: 100m         memory: 128Mi       limits:         cpu: 100m         memory: 128Mi     env:     - name: "FOO"       value: "bar"     envFrom:     - secretRef:       name: "example-secret"     - configMapRef:       name: "example-configmap"     failedJobsHistoryLimit: 1     successfulJobsHistoryLimit: 1     concurrencyPolicy: "Forbid"     restartPolicy: "OnFailure" # Safir parameters |
 | safir.domain | string | `"example.com"` | Safir Domain |
 | safir.environment | string | `"test"` | Safir Environment |
 | safir.jdbcString | string | `"jdbc:postgresql://postgres:5432/dbname"` | Safir JDBC string |
@@ -116,7 +141,7 @@ Major Changes to functions are documented with the version affected. **Before up
 Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
 # safir
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square)
 
 A helm chart for safir erp applicaion
 
@@ -158,7 +183,31 @@ A helm chart for safir erp applicaion
 | apache.startupProbe | object | `{"enabled":false}` | StartupProbe for apache container |
 | commonAnnotations | object | `{}` | Add annotations to all the deployed resources |
 | commonLabels | object | `{}` | Add labels to all the deployed resources |
-| cronjobs | list | `[]` | Declare Cronjobs to be deployed |
+| cronjobs | object | `{"databaseS3Backup":{"command":["/bin/sh","/scripts/database-s3-backup.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}],"volumes":[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]},"safirUpdateStatistics":{"command":["/bin/sh","/scripts/safir-update-statistics.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}],"volumes":[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]}}` | Declared Cronjobs to be deployed |
+| cronjobs.databaseS3Backup | object | `{"command":["/bin/sh","/scripts/database-s3-backup.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}],"volumes":[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]}` | databaseS3Backup Cronjob |
+| cronjobs.databaseS3Backup.command | list | `["/bin/sh","/scripts/database-s3-backup.sh"]` | Cronjob command |
+| cronjobs.databaseS3Backup.enabled | bool | `false` | Enable or disable the Cronjob |
+| cronjobs.databaseS3Backup.historyLimit | int | `3` | Cronjob history limit |
+| cronjobs.databaseS3Backup.image | object | `{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"}` | Cronjob image |
+| cronjobs.databaseS3Backup.image.imagePullPolicy | string | `"IfNotPresent"` | Cronjob image pull policy |
+| cronjobs.databaseS3Backup.image.repository | string | `"ghcr.io/brf-solutions/cronjob-runner"` | Cronjob image repository |
+| cronjobs.databaseS3Backup.image.tag | string | `"0.1.0"` | Cronjob image tag |
+| cronjobs.databaseS3Backup.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Cronjob resources |
+| cronjobs.databaseS3Backup.schedule | string | `"0 0 * * *"` | Cronjob schedule |
+| cronjobs.databaseS3Backup.volumeMounts | list | `[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}]` | Cronjob volume mounts |
+| cronjobs.databaseS3Backup.volumes | list | `[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]` | Cronjob volumes |
+| cronjobs.safirUpdateStatistics | object | `{"command":["/bin/sh","/scripts/safir-update-statistics.sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}],"volumes":[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]}` | safirUpdateStatistics Cronjob |
+| cronjobs.safirUpdateStatistics.command | list | `["/bin/sh","/scripts/safir-update-statistics.sh"]` | Cronjob command |
+| cronjobs.safirUpdateStatistics.enabled | bool | `false` | Enable or disable the Cronjob |
+| cronjobs.safirUpdateStatistics.historyLimit | int | `3` | Cronjob history limit |
+| cronjobs.safirUpdateStatistics.image | object | `{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"}` | Cronjob image |
+| cronjobs.safirUpdateStatistics.image.imagePullPolicy | string | `"IfNotPresent"` | Cronjob image pull policy |
+| cronjobs.safirUpdateStatistics.image.repository | string | `"ghcr.io/brf-solutions/cronjob-runner"` | Cronjob image repository |
+| cronjobs.safirUpdateStatistics.image.tag | string | `"0.1.0"` | Cronjob image tag |
+| cronjobs.safirUpdateStatistics.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Cronjob resources |
+| cronjobs.safirUpdateStatistics.schedule | string | `"0 0 * * *"` | Cronjob schedule |
+| cronjobs.safirUpdateStatistics.volumeMounts | list | `[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}]` | Cronjob volume mounts |
+| cronjobs.safirUpdateStatistics.volumes | list | `[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]` | Cronjob volumes |
 | extraDeploy | list | `[]` | Extra objects to deploy (value evaluated as a template) |
 | extraVolumes | list | `[]` | Array to add extra volumes |
 | fullnameOverride | string | `""` | String to fully override .fullname template |
@@ -183,6 +232,7 @@ A helm chart for safir erp applicaion
 | pvc.storage | string | `"1Gi"` | Define storage size for pvc |
 | pvc.storageClassName | string | `""` | Define StorageClass to use |
 | replicaCount | int | `1` | Number of Safir replicas to deploy |
+| safir | object | `{"domain":"example.com","environment":"test","jdbcString":"jdbc:postgresql://postgres:5432/dbname"}` | Example Cronjob cronjobs:   - name: "example-cronjob"     image:       repository: "gcr.io/google-containers/hyperkube"       tag: "v1.18.0"       imagePullPolicy: "IfNotPresent"     schedule: "*/5 * * * *"     command: ["/bin/sh", "-c", "echo 'Hello World!'"]     args: []     ressources:       requests:         cpu: 100m         memory: 128Mi       limits:         cpu: 100m         memory: 128Mi     env:     - name: "FOO"       value: "bar"     envFrom:     - secretRef:       name: "example-secret"     - configMapRef:       name: "example-configmap"     failedJobsHistoryLimit: 1     successfulJobsHistoryLimit: 1     concurrencyPolicy: "Forbid"     restartPolicy: "OnFailure" # Safir parameters |
 | safir.domain | string | `"example.com"` | Safir Domain |
 | safir.environment | string | `"test"` | Safir Environment |
 | safir.jdbcString | string | `"jdbc:postgresql://postgres:5432/dbname"` | Safir JDBC string |
