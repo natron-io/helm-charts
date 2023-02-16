@@ -1,6 +1,6 @@
 {{- $chart_name := .Chart.Name }}
 {{- $chart_version := .Chart.Version | replace "+" "_" }}
-{{- $release_name := .Release.Name }}
+{{- $release_name := include "common.names.fullname" . }}
 
 {{- range $job := .Values.cronjobs }}
 ---
