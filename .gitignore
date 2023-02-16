@@ -3,3 +3,4 @@ values-test.yaml
 values-prod.yaml
 .DS_Store
 debug.yaml
+values.local.yaml
