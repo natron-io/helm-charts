@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   safir:
   - apiVersion: v2
-    created: "2023-02-16T15:37:31.395484135Z"
+    created: "2023-02-16T16:01:52.162534626Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -14,7 +14,7 @@ entries:
       - bitnami-common
       version: 2.x.x
     description: A helm chart for safir erp applicaion
-    digest: 43fdd6b0cb61e8630a8b59e67d7c22c3a12f801c4cfe52b834a6eca7e7432460
+    digest: 9df0e4bf3dd9f897ee31b66875a2b9f175dfc6be5c1458bd3d7a29f9e2077c3d
     home: https://github.com/natrongmbh/helm-charts
     keywords:
     - safir
@@ -180,4 +180,4 @@ entries:
     urls:
     - https://natrongmbh.github.io/helm-charts/sinpex-app-backend-0.2.0.tgz
     version: 0.2.0
-generated: "2023-02-16T15:37:31.38778323Z"
+generated: "2023-02-16T16:01:52.15478777Z"
