@@ -1,6 +1,12 @@
 {{- $chart_name := .Chart.Name }}
 {{- $chart_version := .Chart.Version | replace "+" "_" }}
 {{- $release_name := include "common.names.fullname" . }}
+{{- $jdbcString := .Values.safir.jdbcString }}
+{{- $jdbcStringParts := split "://" $jdbcString }}
+{{- $pgHost := (split ":" ($jdbcStringParts._1))._0 }}
+{{- $pgPort := (split "/" (split ":" ($jdbcStringParts._1))._1)._0 }}
+{{- $pgDatabase := (split "/" ($jdbcStringParts._1))._1 }}
+{{- $safirDomain := .Values.safir.domain }}
 
 {{- range $job := .Values.cronjobs }}
 ---
@@ -46,6 +52,24 @@ spec:
             name: {{ $job.name }}
             {{- with $job.env }}
             env:
+            - name: SAFIR_DOMAIN
+              value: {{ $safirDomain | quote }}
+            - name: PGHOST
+              value: {{ $pgHost | quote }}
+            - name: PGPORT
+              value: {{ $pgPort | quote }}
+            - name: PGDATABASE
+              value: {{ $pgDatabase | quote }}
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: safir-deployment-tomcat
+                  key: SAFIR_DB_USER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: safir-deployment-tomcat
+                  key: SAFIR_DB_PASSWORD
 {{ toYaml . | indent 12 }}
             {{- end }}
             {{- with $job.envFrom }}
