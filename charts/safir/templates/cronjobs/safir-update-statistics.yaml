@@ -9,7 +9,7 @@
 apiVersion: {{ include "common.capabilities.cronjob.apiVersion" . }}
 kind: CronJob
 metadata:
-  name: {{ printf "%s-database-s3-backup" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
+  name: {{ printf "%s-safir-update-statistics" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- if .Values.commonLabels }}
