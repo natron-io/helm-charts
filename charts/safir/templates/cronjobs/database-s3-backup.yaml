@@ -42,6 +42,9 @@ spec:
           - image: "{{ .Values.cronjobs.databaseS3Backup.image.repository }}:{{ .Values.cronjobs.databaseS3Backup.image.tag }}"
             imagePullPolicy: {{ .Values.cronjobs.databaseS3Backup.image.imagePullPolicy }}
             name: database-s3-backup
+            {{- if .Values.cronjobs.databaseS3Backup..command }}
+            command: {{ .Values.cronjobs.databaseS3Backup..command }}
+            {{- end }}
             {{- with .Values.cronjobs.databaseS3Backup.extraEnvVars }}
             env:
             - name: SAFIR_DOMAIN
