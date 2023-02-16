@@ -22,3 +22,4 @@
 Footer
 # helm-docs
 README.md.gotmpl
+values.test.yaml
