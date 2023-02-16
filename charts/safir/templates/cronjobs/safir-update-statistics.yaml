@@ -39,7 +39,7 @@ spec:
           tolerations: {{- toYaml .Values.cronjobs.safirUpdateStatistics.tolerations | nindent 12 }}
           {{- end }}
           {{- if .Values.global.imagePullSecrets }}
-          imagePullSecrets: {{- include "common.tplvalues.render" (dict "value" .Values.global.imagePullSecrets "context" $) | nindent 8 }}
+          imagePullSecrets: {{- include "common.tplvalues.render" (dict "value" .Values.global.imagePullSecrets "context" $) | nindent 12 }}
           {{- end }}
           restartPolicy: OnFailure
           {{- if .Values.podSecurityContext.enabled }}
