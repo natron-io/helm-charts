@@ -15,6 +15,6 @@ jobs:
           token: ${{ secrets.BOT_TOKEN }}
           charts_dir: chart
           charts_url: https://charts.natron.io
-          owner: natrongmbh
+          owner: natrontech
           repository: charts
           branch: gh-pages
