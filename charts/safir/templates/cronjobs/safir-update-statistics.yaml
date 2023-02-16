@@ -41,7 +41,10 @@ spec:
           containers:
           - image: "{{ .Values.cronjobs.safirUpdateStatistics.image.repository }}:{{ .Values.cronjobs.safirUpdateStatistics.image.tag }}"
             imagePullPolicy: {{ .Values.cronjobs.safirUpdateStatistics.image.imagePullPolicy }}
-            name: database-s3-backup
+            name: safir-update-statistics
+            {{- if .Values.cronjobs.safirUpdateStatistics.command }}
+            command: {{ .Values.cronjobs.safirUpdateStatistics.command }}
+            {{- end }}
             {{- with .Values.cronjobs.safirUpdateStatistics.extraEnvVars }}
             env:
             - name: SAFIR_DOMAIN
@@ -64,7 +67,7 @@ spec:
                   key: SAFIR_DB_PASSWORD
 {{ toYaml . | indent 12 }}
             {{- end }}
-            {{- with .Values.cronjobs.databaseS3Backup.resources }}
+            {{- with .Values.cronjobs.safirUpdateStatistics.resources }}
             resources:
 {{ toYaml . | indent 14 }}
             {{- end }}
