@@ -37,7 +37,9 @@ cronjobs:
       repository: "ghcr.io/brf-solutions/cronjob-runner"
       tag: "0.1.0"
       imagePullPolicy: "IfNotPresent"
-    command: ["/bin/sh", "/scripts/database-s3-backup.sh"]
+    command: ["/bin/sh"]
+    # -- Cronjob args
+    args: ["/scripts/database-s3-backup.sh"]
     resources:
       requests:
         cpu: 100m

@@ -43,8 +43,13 @@ spec:
             imagePullPolicy: {{ .Values.cronjobs.safirUpdateStatistics.image.imagePullPolicy }}
             name: safir-update-statistics
             {{- if .Values.cronjobs.safirUpdateStatistics.command }}
-            command: {{ .Values.cronjobs.safirUpdateStatistics.command }}
+            command:
+{{ toYaml .Values.cronjobs.safirUpdateStatistics.command | indent 12 }}
             {{- end }}
+            {{- with .Values.cronjobs.safirUpdateStatistics.args }}
+            args:
+{{ toYaml . | indent 12 }}
+              {{- end }}
             {{- with .Values.cronjobs.safirUpdateStatistics.extraEnvVars }}
             env:
             - name: SAFIR_DOMAIN
