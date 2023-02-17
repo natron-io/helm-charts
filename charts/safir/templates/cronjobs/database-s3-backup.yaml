@@ -43,8 +43,13 @@ spec:
             imagePullPolicy: {{ .Values.cronjobs.databaseS3Backup.image.imagePullPolicy }}
             name: database-s3-backup
             {{- if .Values.cronjobs.databaseS3Backup.command }}
-            command: {{ .Values.cronjobs.databaseS3Backup.command }}
+            command:
+{{ toYaml .Values.cronjobs.databaseS3Backup.command | indent 12 }}
             {{- end }}
+            {{- with .Values.cronjobs.databaseS3Backup.args }}
+            args:
+{{ toYaml . | indent 12 }}
+              {{- end }}
             {{- with .Values.cronjobs.databaseS3Backup.extraEnvVars }}
             env:
             - name: SAFIR_DOMAIN

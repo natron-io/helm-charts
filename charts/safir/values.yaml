@@ -46,7 +46,9 @@ cronjobs:
       # -- Cronjob image pull policy
       imagePullPolicy: "IfNotPresent"
     # -- Cronjob command
-    command: ["/bin/sh", "/scripts/database-s3-backup.sh"]
+    command: ["/bin/sh"]
+    # -- Cronjob args
+    args: ["/scripts/database-s3-backup.sh"]
     # -- Cronjob resources
     resources:
       requests:
@@ -83,7 +85,9 @@ cronjobs:
       # -- Cronjob image pull policy
       imagePullPolicy: "IfNotPresent"
     # -- Cronjob command
-    command: ["/bin/sh", "/scripts/safir-update-statistics.sh"]
+    command: ["/bin/sh"]
+    # -- Cronjob args
+    args: ["/scripts/safir-update-statistics.sh"]
     # -- Cronjob resources
     resources:
       requests:
