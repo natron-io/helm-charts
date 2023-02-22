@@ -15,8 +15,8 @@ keywords:
   - safir
 maintainers:
   - name: Natron Tech GmbH
-    url: https://natron.io
+    email: info@natron.io
   - name: BRF Solutions GmbH
-    url: https://brf-solutions.ch
+    email: infrastructure@brf-solutions.ch
 name: safir
-version: 0.1.9
+version: 0.1.10
