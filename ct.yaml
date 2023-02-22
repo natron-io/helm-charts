@@ -3,8 +3,8 @@ target-branch: main
 chart-dirs:
   - charts
 chart-repos:
-  - natron=https://charts.natron.io
-  - bitnami=https://charts.bitnami.com/bitnami
+  - natron=https://charts.natron.io/
+  - bitnami=https://charts.bitnami.com/bitnami/
 validate-chart-schema: true
 validate-maintainers: true
 validate-yaml: false
