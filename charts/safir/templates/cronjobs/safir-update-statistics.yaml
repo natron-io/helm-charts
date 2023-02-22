@@ -3,7 +3,7 @@
 {{- $pgHost := (split ":" ($jdbcStringParts._1))._0 }}
 {{- $pgPort := (split "/" (split ":" ($jdbcStringParts._1))._1)._0 }}
 {{- $pgDatabase := (split "/" ($jdbcStringParts._1))._1 }}
-{{- $safirDomain := .Values.safir.domain }}
+{{- $safirDomain := .Values.ingress.hostname }}
 
 {{- if .Values.cronjobs.safirUpdateStatistics.enabled -}}
 apiVersion: {{ include "common.capabilities.cronjob.apiVersion" . }}
