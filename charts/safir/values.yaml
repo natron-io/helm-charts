@@ -141,7 +141,7 @@ cronjobs:
 
 ## Safir parameters
 safir:
-  # -- Safir Domain
+  # -- Safir Domain (if not set, the default ingress hostnames will be used)
   domain: example.com
   # -- Safir Environment
   environment: test

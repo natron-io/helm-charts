@@ -102,7 +102,7 @@ Major Changes to functions are documented with the version affected. **Before up
 | pvc.storageClassName | string | `""` | Define StorageClass to use |
 | replicaCount | int | `1` | Number of Safir replicas to deploy |
 | safir | object | `{"domain":"example.com","environment":"test","jdbcString":"jdbc:postgresql://postgres:5432/dbname"}` | Example Cronjob cronjobs:   - name: "example-cronjob"     image:       repository: "gcr.io/google-containers/hyperkube"       tag: "v1.18.0"       imagePullPolicy: "IfNotPresent"     schedule: "*/5 * * * *"     command: ["/bin/sh", "-c", "echo 'Hello World!'"]     args: []     ressources:       requests:         cpu: 100m         memory: 128Mi       limits:         cpu: 100m         memory: 128Mi     env:     - name: "FOO"       value: "bar"     envFrom:     - secretRef:       name: "example-secret"     - configMapRef:       name: "example-configmap"     failedJobsHistoryLimit: 1     successfulJobsHistoryLimit: 1     concurrencyPolicy: "Forbid"     restartPolicy: "OnFailure" # Safir parameters |
-| safir.domain | string | `"example.com"` | Safir Domain |
+| safir.domain | string | `"example.com"` | Safir Domain (if not set, the default ingress hostnames will be used) |
 | safir.environment | string | `"test"` | Safir Environment |
 | safir.jdbcString | string | `"jdbc:postgresql://postgres:5432/dbname"` | Safir JDBC string |
 | secretProviderClass.cloudName | string | If not set, `AzurePublicCloud` is used | Name of the secretProviderClass resource |
@@ -237,7 +237,7 @@ A helm chart for safir erp applicaion
 | pvc.storageClassName | string | `""` | Define StorageClass to use |
 | replicaCount | int | `1` | Number of Safir replicas to deploy |
 | safir | object | `{"domain":"example.com","environment":"test","jdbcString":"jdbc:postgresql://postgres:5432/dbname"}` | Example Cronjob cronjobs:   - name: "example-cronjob"     image:       repository: "gcr.io/google-containers/hyperkube"       tag: "v1.18.0"       imagePullPolicy: "IfNotPresent"     schedule: "*/5 * * * *"     command: ["/bin/sh", "-c", "echo 'Hello World!'"]     args: []     ressources:       requests:         cpu: 100m         memory: 128Mi       limits:         cpu: 100m         memory: 128Mi     env:     - name: "FOO"       value: "bar"     envFrom:     - secretRef:       name: "example-secret"     - configMapRef:       name: "example-configmap"     failedJobsHistoryLimit: 1     successfulJobsHistoryLimit: 1     concurrencyPolicy: "Forbid"     restartPolicy: "OnFailure" # Safir parameters |
-| safir.domain | string | `"example.com"` | Safir Domain |
+| safir.domain | string | `"example.com"` | Safir Domain (if not set, the default ingress hostnames will be used) |
 | safir.environment | string | `"test"` | Safir Environment |
 | safir.jdbcString | string | `"jdbc:postgresql://postgres:5432/dbname"` | Safir JDBC string |
 | secretProviderClass.cloudName | string | If not set, `AzurePublicCloud` is used | Name of the secretProviderClass resource |
