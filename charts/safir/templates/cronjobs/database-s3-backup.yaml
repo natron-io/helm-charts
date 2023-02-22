@@ -50,7 +50,6 @@ spec:
             args:
 {{ toYaml . | indent 12 }}
               {{- end }}
-            {{- with .Values.cronjobs.databaseS3Backup.extraEnvVars }}
             env:
             - name: SAFIR_DOMAIN
               value: {{ $safirDomain | quote }}
@@ -70,6 +69,7 @@ spec:
                 secretKeyRef:
                   name: safir-deployment-tomcat
                   key: SAFIR_DB_PASSWORD
+            {{- with .Values.cronjobs.databaseS3Backup.extraEnvVars }}
 {{ toYaml . | indent 12 }}
             {{- end }}
             {{- with .Values.cronjobs.databaseS3Backup.resources }}
