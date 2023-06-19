@@ -182,46 +182,6 @@ initContainers: []
 extraVolumes: []
 
 
-## Apache parameters
-apache:
-  image:
-    # -- image registry for apache container
-    registry: "docker.io"
-    # -- image repository for apache container
-    repository: httpd
-    # -- image tag for apache container
-    tag: latest
-    # -- image digest in the way sha256:aa... for apache container (will override the tag)
-    digest: ""
-    # -- image pull policy for apache container
-    pullPolicy: Always
-  # -- Apache containers' Security Context
-  containerSecurityContext:
-    enabled: true
-    allowPrivilegeEscalation: false
-  # -- Override default container command for apache container
-  command: []
-  # -- Override default container args for apache container
-  args: []
-  # -- Apache containers' resource requests and limits
-  resources: {}
-  # -- Extra environment variables to be set on apache container
-  extraEnvVars: []
-  # -- Secret with extra environment variables for apache contianer
-  extraEnvVarsSecret: ""
-  # -- Array to add extra mount for the apache container
-  extraVolumeMounts: []
-  # -- LivenessProbe for apache container
-  livenessProbe:
-    enabled: false
-  # -- ReadinessProbe for apache container
-  readinessProbe:
-    enabled: false
-  # -- StartupProbe for apache container
-  startupProbe:
-    enabled: false
-
-
 ## Tomcat parameters
 tomcat:
   image:
