@@ -1,8 +1,8 @@
 # safir
 
-![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square)
 
-A helm chart for safir erp applicaion
+A helm chart for safir erp application
 
 **Homepage:** <https://github.com/natrongmbh/helm-charts>
 
@@ -26,6 +26,8 @@ Major Changes to functions are documented with the version affected. **Before up
 
 | **Change** | **Chart Version** | **Description** | **Commits/PRs** |
 | :----------- | :---------------- | :--------------------- | :-------------- |
+| Major | 0.2.0 | Removes Apache httpd container | |
+| Minor | 0.1.10 | Adds optional cronjobs | |
 |||||
 
 ## Values
@@ -33,21 +35,6 @@ Major Changes to functions are documented with the version affected. **Before up
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Affinity for pod assignment |
-| apache.args | list | `[]` | Override default container args for apache container |
-| apache.command | list | `[]` | Override default container command for apache container |
-| apache.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"enabled":true}` | Apache containers' Security Context |
-| apache.extraEnvVars | list | `[]` | Extra environment variables to be set on apache container |
-| apache.extraEnvVarsSecret | string | `""` | Secret with extra environment variables for apache contianer |
-| apache.extraVolumeMounts | list | `[]` | Array to add extra mount for the apache container |
-| apache.image.digest | string | `""` | image digest in the way sha256:aa... for apache container (will override the tag) |
-| apache.image.pullPolicy | string | `"Always"` | image pull policy for apache container |
-| apache.image.registry | string | `"docker.io"` | image registry for apache container |
-| apache.image.repository | string | `"httpd"` | image repository for apache container |
-| apache.image.tag | string | `"latest"` | image tag for apache container |
-| apache.livenessProbe | object | `{"enabled":false}` | LivenessProbe for apache container |
-| apache.readinessProbe | object | `{"enabled":false}` | ReadinessProbe for apache container |
-| apache.resources | object | `{}` | Apache containers' resource requests and limits |
-| apache.startupProbe | object | `{"enabled":false}` | StartupProbe for apache container |
 | commonAnnotations | object | `{}` | Add annotations to all the deployed resources |
 | commonLabels | object | `{}` | Add labels to all the deployed resources |
 | cronjobs | object | `{"databaseS3Backup":{"args":["/scripts/database-s3-backup.sh"],"command":["/bin/sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"database-s3-backup","readOnly":true}],"volumes":[{"configMap":{"name":"database-s3-backup"},"name":"database-s3-backup"}]},"safirUpdateStatistics":{"args":["/scripts/safir-update-statistics.sh"],"command":["/bin/sh"],"enabled":false,"extraEnvVars":[],"historyLimit":3,"image":{"imagePullPolicy":"IfNotPresent","repository":"ghcr.io/brf-solutions/cronjob-runner","tag":"0.1.0"},"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"schedule":"0 0 * * *","volumeMounts":[{"mountPath":"/scripts","name":"safir-update-statistics","readOnly":true}],"volumes":[{"configMap":{"name":"safir-update-statistics"},"name":"safir-update-statistics"}]}}` | Declared Cronjobs to be deployed |

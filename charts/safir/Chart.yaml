@@ -9,7 +9,7 @@ dependencies:
     tags:
       - bitnami-common
     version: 2.x.x
-description: A helm chart for safir erp applicaion
+description: A helm chart for safir erp application
 home: https://github.com/natrongmbh/helm-charts
 keywords:
   - safir
@@ -19,4 +19,4 @@ maintainers:
   - name: BRF Solutions GmbH
     email: infrastructure@brf-solutions.ch
 name: safir
-version: 0.1.10
+version: 0.2.0

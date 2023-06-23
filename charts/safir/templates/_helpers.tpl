@@ -1,11 +1,4 @@
 {/*
-Return the proper apache image name
-*/}}
-{{- define "safir.apache.image" -}}
-{{ include "common.images.image" (dict "imageRoot" .Values.apache.image "global" .Values.global) }}
-{{- end -}}
-
-{/*
 Return the proper tomcat image name
 */}}
 {{- define "safir.tomcat.image" -}}

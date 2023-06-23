@@ -68,61 +68,6 @@ spec:
           - 'PostgreSQL is ready'
         {{- end }}
       containers:
-        - name: apache
-          image: {{ include "safir.apache.image" . }}
-          imagePullPolicy: {{ .Values.apache.image.pullPolicy | quote }}
-          {{- if .Values.apache.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.apache.containerSecurityContext "enabled" | toYaml | nindent 12 }}
-          {{- end }}
-          {{- if .Values.apache.command }}
-          command: {{- include "common.tplvalues.render" (dict "value" .Values.apache.command "context" $) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.apache.args }}
-          args: {{- include "common.tplvalues.render" (dict "value" .Values.apache.args "context" $) | nindent 12 }}
-          {{- end }}
-          ports:
-            - containerPort: 80
-              name: web
-          volumeMounts:
-            - name: www
-              mountPath: /var/www/htdocs
-            {{- if .Values.apache.extraVolumeMounts }}
-            {{- include "common.tplvalues.render" (dict "value" .Values.apache.extraVolumeMounts "context" $) | nindent 12 }}
-            {{- end }}
-          env:
-            - name: TZ
-              value: {{ .Values.timezone | quote }}
-            {{- if .Values.ingress.hostname }}
-            - name: SAFIR_DOMAIN
-              value: {{ .Values.ingress.hostname | quote }}
-            {{- else }}
-            - name: SAFIR_DOMAIN
-              value: {{ .Values.safir.domain | quote }}
-            {{- end }}
-            - name: TOMCAT_HOSTNAME
-              value: "localhost"
-            - name: TOMCAT_PORT
-              value: "8049"
-            {{- if .Values.apache.extraEnvVars }}
-            {{- include "common.tplvalues.render" (dict "value" .Values.apache.extraEnvVars "context" $) | nindent 12 }}
-            {{- end }}
-          envFrom:
-          {{- if .Values.apache.extraEnvVarsSecret }}
-          - secretRef:
-              name: {{ include "common.tplvalues.render" (dict "value" .Values.apache.extraEnvVarsSecret "context" $) }}
-          {{- end }}
-          {{- if .Values.apache.livenessProbe.enabled }}
-          livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.apache.livenessProbe "enabled") "context" $) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.apache.readinessProbe.enabled }}
-          readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.apache.readinessProbe "enabled") "context" $) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.apache.startupProbe.enabled }}
-          startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.apache.startupProbe "enabled") "context" $) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.apache.resources }}
-          resources: {{- toYaml .Values.apache.resources | nindent 12 }}
-          {{- end }}
         - name: tomcat
           image: {{ include "safir.tomcat.image" . }}
           imagePullPolicy: {{ .Values.tomcat.image.pullPolicy | quote }}
@@ -136,8 +81,8 @@ spec:
           args: {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.args "context" $) | nindent 12 }}
           {{- end }}
           ports:
-            - containerPort: 8049
-              name: ajp
+            - containerPort: 80
+              name: web
           volumeMounts:
             - name: www
               mountPath: /var/www/htdocs
