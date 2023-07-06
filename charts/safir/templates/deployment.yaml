@@ -67,6 +67,18 @@ spec:
           - 'echo'
           - 'PostgreSQL is ready'
         {{- end }}
+        # creates the initial folder structure for the attached volume as tomcat expects it
+        - name: create-dirs
+          image: busybox:stable
+          command:
+            - "/bin/mkdir"
+          args:
+            - "-p"
+            - "/var/www/htdocs/safir-static/"
+            - "/var/www/htdocs/images/"
+          volumeMounts:
+            - name: www
+              mountPath: "/var/www/htdocs"
       containers:
         - name: tomcat
           image: {{ include "safir.tomcat.image" . }}
