@@ -34,7 +34,8 @@ spec:
           {{- if .Values.global.imagePullSecrets }}
           imagePullSecrets: {{- include "common.tplvalues.render" (dict "value" .Values.global.imagePullSecrets "context" $) | nindent 12 }}
           {{- end }}
-          restartPolicy: OnFailure
+          restartPolicy: Never
+          activeDeadlineSeconds: 600
           {{- if .Values.podSecurityContext.enabled }}
           securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
