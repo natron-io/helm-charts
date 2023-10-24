@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
+  {{- if .Values.updateStrategy }}
+  strategy: {{- toYaml .Values.updateStrategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- if .Values.podAnnotations }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.podAnnotations "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets: {{- include "common.tplvalues.render" (dict "value" .Values.global.imagePullSecrets "context" $) | nindent 8 }}
+      {{- end }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      serviceAccountName: {{ template "shop.serviceAccountName" . }}
+      {{- if .Values.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" .Values.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.topologySpreadConstraints "context" .) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- if .Values.initContainers }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.initContainers "context" $) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.postgresql.enabled }}
+        # pg_isready init container to check if the database is ready
+        - name: pg-isready
+          image: postgres
+          command:
+          - 'sh'
+          - '-c'
+          - |
+            until pg_isready -h {{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local -p 5432; do
+              echo "Waiting for PostgreSQL to be ready..."
+              sleep 2
+            done
+          - 'echo'
+          - 'PostgreSQL is ready'
+        {{- end }}
+      containers:
+        - name: shop
+          image: {{ include "shop.tomcat.image" . }}
+          imagePullPolicy: {{ .Values.tomcat.image.pullPolicy | quote }}
+          {{- if .Values.tomcat.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.tomcat.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tomcat.command }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.command "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tomcat.args }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.args "context" $) | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: 80
+              name: web
+          volumeMounts:
+            {{- if .Values.tomcat.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.extraVolumeMounts "context" $) | nindent 12 }}
+            {{- end }}
+            {{- if .Values.secretProviderClass.enabled }}
+            - name: secret-store
+              mountPath: "/mnt/secret-store"
+              readOnly: true
+            {{- end }}
+          env:
+            - name: TZ
+              value: {{ .Values.timezone | quote }}
+            {{- if .Values.ingress.hostname }}
+            - name: SAFIR_DOMAIN
+              value: {{ .Values.ingress.hostname | quote }}
+            {{- else }}
+            - name: SAFIR_DOMAIN
+              value: {{ .Values.shop.domain | quote }}
+            {{- end }}
+            - name: SAFIR_ENVIRONMENT
+              value: {{ .Values.shop.environment | quote }}
+            {{- if .Values.postgresql.enabled }}
+            # get namespace of the release
+            - name: SAFIR_DB_CONNECTION
+              value: "jdbc:postgresql://{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:5432/{{ .Values.postgresql.global.postgresql.auth.database }}?sslmode=disable"
+            {{- else }}
+            - name: SAFIR_DB_CONNECTION
+              value: {{ .Values.shop.jdbcString | quote }}
+            {{- end }}
+            {{- if .Values.tomcat.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.tomcat.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
+          envFrom:
+          {{- if .Values.tomcat.extraEnvVarsSecret }}
+          - secretRef:
+              name: {{ include "common.tplvalues.render" (dict "value" .Values.tomcat.extraEnvVarsSecret "context" $) }}
+          {{- end }}
+          {{- if .Values.tomcat.livenessProbe.enabled }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.tomcat.livenessProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tomcat.readinessProbe.enabled }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.tomcat.readinessProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tomcat.startupProbe.enabled }}
+          startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.tomcat.startupProbe "enabled") "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tomcat.resources }}
+          resources: {{- toYaml .Values.tomcat.resources | nindent 12 }}
+          {{- end }}
+      {{- if .Values.secretProviderClass.enabled }}
+      volumes:
+        - name: secret-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ include "shop.secretProviderClassName" . }}
+      {{- end }}

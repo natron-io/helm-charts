@@ -1,0 +1,190 @@
+## Global parameters
+global:
+  # -- Global Docker image registry, override the image parameters
+  # ref: https://github.com/bitnami/charts/tree/master/bitnami/common#images
+  imageRegistry: ""
+  # -- Global Docker registry secret names as an array
+  imagePullSecrets:
+    - name: github-imagepullsecret
+
+# -- timezone to set as environment variable 'TZ' in each pod
+timezone: "Europe/Zurich"
+
+
+## Bitnami Common parameters
+# ref: https://github.com/bitnami/charts/tree/master/bitnami/common
+
+# -- String to partially override .fullname template (will maintain the release name)
+nameOverride: ""
+# -- String to fully override .fullname template
+fullnameOverride: ""
+# -- String to fully override common.names.namespace
+namespaceOverride: ""
+# -- Extra objects to deploy (value evaluated as a template)
+extraDeploy: []
+# -- Add labels to all the deployed resources
+commonLabels: {}
+# -- Add annotations to all the deployed resources
+commonAnnotations: {}
+
+
+## Shop parameters
+shop:
+  # -- Shop Domain
+  domain: example.com
+  # -- Shop Environment
+  environment: test
+  # -- Shop JDBC string
+  jdbcString: "jdbc:postgresql://postgres:5432/dbname"
+
+
+## Deployment parameters
+
+# -- Number of Shop replicas to deploy
+replicaCount: 1
+# -- Additional labels for Shop pods
+podLabels: {}
+# -- Annotations for Shop pods
+podAnnotations: {}
+
+updateStrategy:
+  # -- Deployment strategy type
+  type: Recreate
+  # -- Deployment rolling update configuration parameters
+  # @default -- Not set due to type "Recreate"
+  #rollingUpdate: {}
+
+# -- Affinity for pod assignment
+affinity: {}
+# -- Node labels for pod assignment
+nodeSelector: {}
+# -- Tolerations for pod assignment
+tolerations: []
+# -- Topology Spread Constraints for pod assignment
+topologySpreadConstraints: []
+# -- Shop pods' Security Context
+podSecurityContext:
+  enabled: false
+# -- Extra init containers
+initContainers: []
+
+
+## Tomcat parameters
+tomcat:
+  image:
+    # -- image registry for tomcat container
+    registry: "docker.io"
+    # -- image repository for tomcat container
+    repository: tomcat
+    # -- image tag for tomcat container
+    tag: latest
+    # -- image digest in the way sha256:aa... for tomcat container (will override the tag)
+    digest: ""
+    # -- image pull policy for tomcat container
+    pullPolicy: Always
+  # -- Tomcat containers' Security Context
+  containerSecurityContext:
+    enabled: true
+    allowPrivilegeEscalation: false
+  # -- Override default container command for tomcat container
+  command: []
+  # -- Override default container args for tomcat container
+  args: []
+  # -- Tomcat containers' resource requests and limits
+  resources: {}
+  # -- Extra environment variables to be set on tomcat container
+  extraEnvVars: []
+  # -- Secret with extra environment variables for tomcat contianer
+  extraEnvVarsSecret: ""
+  # -- Array to add extra mount for the tomcat container
+  extraVolumeMounts: []
+  # -- LivenessProbe for tomcat container
+  livenessProbe:
+    enabled: false
+  # -- ReadinessProbe for tomcat container
+  readinessProbe:
+    enabled: false
+  # -- StartupProbe for tomcat container
+  startupProbe:
+    enabled: false
+
+
+## ServiceAccount parameters
+serviceAccount:
+  # -- Enable creation of ServiceAccount for shop pod
+  create: true
+  # -- The name of the ServiceAccount to use
+  # @default -- If not set, name is generated using the `common.names.fullname` template
+  name: ""
+  # -- Auto-mount the service account token in the pod
+  automountServiceAccountToken: false
+
+
+## Service parameters
+service:
+  # -- Service annotations
+  annotations: {}
+
+
+## PVC parameters
+pvc:
+  # -- Define storage size for pvc
+  storage: "1Gi"
+  # -- Define AccessMode of pvc
+  # @default -- If not set, `ReadWriteOnce` is used
+  accessModes: ""
+  # -- Define StorageClass to use
+  storageClassName: ""
+
+
+## Ingress parameters
+ingress:
+  # -- Enable ingress creation
+  enabled: false
+  # -- Additional annotations for the Ingress resource
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+  ingressClassName: nginx
+  # -- Default host for the ingress resource
+  hostname: example.com
+  # -- Ingress path
+  path: /
+  # -- Ingress path type
+  pathType: ImplementationSpecific
+  # -- Create TLS Secret, named "domain-tls"
+  tls: true
+
+
+## secretProviderClass parameters
+secretProviderClass:
+  # -- Enable secretProviderClass creation
+  enabled: true
+  # -- Name of the secretProviderClass resource
+  # @default -- If not set, name is generated using the `common.names.fullname` template
+  name: ""
+  # -- Name of the keyvault
+  keyvaultName: ""
+  # -- Name of the secretProviderClass resource
+  # @default -- `false`
+  usePodIdentity: ""
+  # -- Name of the secretProviderClass resource
+  # @default -- `true` for using managed identity
+  useVMManagedIdentity: ""
+  # -- Name of the secretProviderClass resource
+  # @default -- "If empty, then defaults to use the system assigned identity on the VM"
+  userAssignedIdentityID: ""
+  # -- Name of the secretProviderClass resource
+  # @default -- If not set, `AzurePublicCloud` is used
+  cloudName: ""
+  # -- Name of the tenant
+  tenantId: ""
+  # -- Array of objects
+  objects: []
+  # -- Optional Array of secretObjects to generate
+  secretObjects: []
+
+
+## PostgreSQL chart configuration
+## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml
+postgresql:
+  enabled: false
